@@ -10,9 +10,8 @@ public class MorseInputManager : MonoBehaviour
     public float dotThreshold = 0.25f;
     public float letterGapThreshold = 0.8f;
 
-    // 🚀 NEW: This links our Input Manager to your Word Tracker component
     [Header("Word System Link")]
-    public WordTracker wordTracker;
+    public Typer typer;
 
     private float pressStartTime;
     private float releaseStartTime;
@@ -88,14 +87,13 @@ public class MorseInputManager : MonoBehaviour
         // 2. Log out both the code and the real letter!
         Debug.Log($"[Morse] {currentLetterSequence}  =>  [Decoded] {translatedLetter}");
         
-        // 🚀 NEW: Send the decoded letter to the Word Tracker component!
-        if (wordTracker != null)
+        if (typer != null)
         {
-            wordTracker.ReceiveLetter(translatedLetter);
+            typer.ReceiveMorseLetter(translatedLetter);
         }
         else
         {
-            Debug.LogWarning("WordTracker reference is missing on the MorseInputManager component!");
+            Debug.LogWarning("Typer reference is missing on the MorseInputManager component!");
         }
         
         // Reset for the next letter

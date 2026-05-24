@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class MorseDecoder
 {
+    public const char InvalidLetter = '!';
+
     // A static dictionary means any script can access it instantly without needing a GameObject
     private static readonly Dictionary<string, char> MorseDictionary = new Dictionary<string, char>
     {
@@ -31,7 +33,6 @@ public static class MorseDecoder
             return letter;
         }
         
-        // Return a fallback character if someone enters a sequence that doesn't exist
-        return '!'; 
+        return InvalidLetter;
     }
 }

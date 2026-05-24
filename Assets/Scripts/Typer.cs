@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem; 
 
 public class Typer : MonoBehaviour
 {
@@ -29,39 +26,26 @@ public class Typer : MonoBehaviour
         wordOutput.text = remainingWord;
     }
 
-    // --- UNITY 6 NEW INPUT SYSTEM EVENT MANAGEMENT ---
-    private void OnEnable()
+    /// <summary>
+    /// Called by MorseInputManager when a dot/dash sequence is decoded into a letter.
+    /// </summary>
+    public void ReceiveMorseLetter(char letter)
     {
-        // Hook into Unity's global text input event when this script wakes up
-        Keyboard.current.onTextInput += OnCharacterTyped;
-    }
+        if (letter == MorseDecoder.InvalidLetter)
+            return;
 
-    private void OnDisable()
-    {
-        // Unhook the event when the object is disabled/destroyed to prevent memory leaks
-        if (Keyboard.current != null)
-        {
-            Keyboard.current.onTextInput -= OnCharacterTyped;
-        }
+        EnterLetter(char.ToLowerInvariant(letter).ToString());
     }
-
-    private void OnCharacterTyped(char character)
-    {
-        // Convert the typed char to a string and pass it to your logic
-        string typedLetter = character.ToString();
-        EnterLetter(typedLetter);
-    }
-    // -----------------------------------------------------
 
     private void EnterLetter(string typedLetter)
     {
-        if(IsCorrectLetter(typedLetter))
+        if (IsCorrectLetter(typedLetter))
         {
             RemoveLetter();
 
             if (IsWordComplete())
             {
-                SetCurrentWord(); // Handle word completion (e.g., display success message, load next word)
+                SetCurrentWord();
             }
         }
     }
