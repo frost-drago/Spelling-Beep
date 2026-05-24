@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
+using UnityEngine.InputSystem; 
 
 public class Typer : MonoBehaviour
 {
-    // You need a word bank
-    public Text wordOutput = null;
+    public WordBank wordBank = null;
+    public TextMeshProUGUI wordOutput;
 
     private string remainingWord = string.Empty;
-    private string currentWord = "banana";
+    private string currentWord;
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class Typer : MonoBehaviour
 
     private void SetCurrentWord()
     {
-        // Get bank word
+        currentWord = wordBank.GetWord();
         SetRemainingWord(currentWord);
     }
 
@@ -28,23 +29,29 @@ public class Typer : MonoBehaviour
         wordOutput.text = remainingWord;
     }
 
-    private void Update()
+    // --- UNITY 6 NEW INPUT SYSTEM EVENT MANAGEMENT ---
+    private void OnEnable()
     {
-        CheckInput();
+        // Hook into Unity's global text input event when this script wakes up
+        Keyboard.current.onTextInput += OnCharacterTyped;
     }
 
-    private void CheckInput()
+    private void OnDisable()
     {
-        if(Input.anyKeyDown)
+        // Unhook the event when the object is disabled/destroyed to prevent memory leaks
+        if (Keyboard.current != null)
         {
-            string keysPressed = Input.inputString;
-
-            if(keysPressed.Length == 1)
-            {
-                EnterLetter(keysPressed);
-            }
+            Keyboard.current.onTextInput -= OnCharacterTyped;
         }
     }
+
+    private void OnCharacterTyped(char character)
+    {
+        // Convert the typed char to a string and pass it to your logic
+        string typedLetter = character.ToString();
+        EnterLetter(typedLetter);
+    }
+    // -----------------------------------------------------
 
     private void EnterLetter(string typedLetter)
     {
