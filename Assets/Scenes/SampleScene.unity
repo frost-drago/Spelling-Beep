@@ -1018,6 +1018,52 @@ MonoBehaviour:
   wordOutputForeground: {fileID: 218512314}
   morseOutput: {fileID: 821823874}
   morseInputManager: {fileID: 659378997}
+  correctLetterFx: {fileID: 1400066706}
+--- !u!1 &1400066704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1400066705}
+  - component: {fileID: 1400066706}
+  m_Layer: 0
+  m_Name: Letter Correct FX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1400066705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400066704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1400066706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400066704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4c1f2a9b3d4657a0f1e2d3c4b5a697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CorrectLetterFx
+  fxPrefab: {fileID: 4938095755617958529, guid: 2e79f16be10fbd14f8d5ef191f8db4aa, type: 3}
 --- !u!1 &1345066704
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,5 +1340,6 @@ SceneRoots:
   - {fileID: 582782513}
   - {fileID: 985979802}
   - {fileID: 659378999}
+  - {fileID: 1400066705}
   - {fileID: 8481008685375188427}
   - {fileID: 7017279008794853071}

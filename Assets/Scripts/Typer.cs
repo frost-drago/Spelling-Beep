@@ -8,6 +8,7 @@ public class Typer : MonoBehaviour
     public TextMeshProUGUI wordOutputForeground;
     public TextMeshProUGUI morseOutput;
     public MorseInputManager morseInputManager;
+    public CorrectLetterFx correctLetterFx;
 
     private string remainingWord = string.Empty;
     private string currentWord;
@@ -88,6 +89,7 @@ public class Typer : MonoBehaviour
     {
         if (IsCorrectLetter(typedLetter))
         {
+            correctLetterFx?.Play();
             RemoveLetter();
 
             if (IsWordComplete())
