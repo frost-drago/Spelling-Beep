@@ -36,7 +36,7 @@ public class Typer : MonoBehaviour
         wordOutputForeground.text = currentWord;
 
         if (morseOutput != null)
-            morseOutput.text = MorseDecoder.EncodeWord(currentWord);
+            morseOutput.text = MorseDecoder.EncodeWord(remainingWord);
 
         wordOutputForeground.ForceMeshUpdate();
         int revealedCount = currentWord.Length - remainingWord.Length;
