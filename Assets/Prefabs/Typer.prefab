@@ -104,4 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d060031978a3dfb4690147c31bc819bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Typer
-  wordOutput: {fileID: 0}
+  wordOutputBackground: {fileID: 0}
+  wordOutputForeground: {fileID: 0}

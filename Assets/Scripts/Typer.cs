@@ -4,7 +4,8 @@ using TMPro;
 public class Typer : MonoBehaviour
 {
     public WordBank wordBank = null;
-    public TextMeshProUGUI wordOutput;
+    public TextMeshProUGUI wordOutputBackground;
+    public TextMeshProUGUI wordOutputForeground;
 
     private string remainingWord = string.Empty;
     private string currentWord;
@@ -23,7 +24,47 @@ public class Typer : MonoBehaviour
     private void SetRemainingWord(string newString)
     {
         remainingWord = newString;
-        wordOutput.text = remainingWord;
+        UpdateWordDisplays();
+    }
+
+    private void UpdateWordDisplays()
+    {
+        wordOutputBackground.text = currentWord;
+        wordOutputForeground.text = currentWord;
+
+        wordOutputForeground.ForceMeshUpdate();
+        int revealedCount = currentWord.Length - remainingWord.Length;
+        HideRevealedForegroundLetters(revealedCount);
+    }
+
+    /// <summary>
+    /// Makes completed letters transparent on the white layer so the green word shows through underneath.
+    /// Both layers keep the full word string so glyph positions stay aligned.
+    /// </summary>
+    private void HideRevealedForegroundLetters(int revealedCount)
+    {
+        TMP_TextInfo textInfo = wordOutputForeground.textInfo;
+
+        int visibleIndex = 0;
+        for (int i = 0; i < textInfo.characterCount; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible)
+                continue;
+
+            byte alpha = visibleIndex < revealedCount ? (byte)0 : (byte)255;
+            visibleIndex++;
+
+            int materialIndex = charInfo.materialReferenceIndex;
+            Color32[] vertexColors = textInfo.meshInfo[materialIndex].colors32;
+            int vertexIndex = charInfo.vertexIndex;
+            for (int v = 0; v < 4; v++)
+                vertexColors[vertexIndex + v].a = alpha;
+
+            textInfo.meshInfo[materialIndex].colors32 = vertexColors;
+        }
+
+        wordOutputForeground.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
     }
 
     /// <summary>
