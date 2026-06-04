@@ -1,8 +1,8 @@
 //MorseInputManager.cs
 
 using UnityEngine;
-// 1. Crucial: Include the new Input System namespace
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
+using TMPro;
 
 public class MorseInputManager : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class MorseInputManager : MonoBehaviour
 
     [Header("Word System Link")]
     public Typer typer;
+    public TextMeshProUGUI typingOutput;
 
     private float pressStartTime;
     private float releaseStartTime;
@@ -19,10 +20,10 @@ public class MorseInputManager : MonoBehaviour
     private bool gapTracked = true;
 
     private string currentLetterSequence = "";
+    private string lastCompletedDisplay = "";
 
     void Update()
     {
-        // 2. Modern Unity 6 way to check if Spacebar or Left Mouse Button was JUST pressed
         bool spaceJustPressed = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
         bool mouseJustPressed = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
 
@@ -33,7 +34,6 @@ public class MorseInputManager : MonoBehaviour
             gapTracked = false;
         }
 
-        // 3. Modern Unity 6 way to check if Spacebar or Left Mouse Button was JUST released
         bool spaceJustReleased = Keyboard.current != null && Keyboard.current.spaceKey.wasReleasedThisFrame;
         bool mouseJustReleased = Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame;
 
@@ -44,16 +44,11 @@ public class MorseInputManager : MonoBehaviour
             float holdDuration = Time.time - pressStartTime;
 
             if (holdDuration < dotThreshold)
-            {
                 OnDotDetected();
-            }
             else
-            {
                 OnDashDetected();
-            }
         }
 
-        // Detect Gaps (End of a letter sequence)
         if (!isPressed && !gapTracked)
         {
             float idleDuration = Time.time - releaseStartTime;
@@ -65,38 +60,63 @@ public class MorseInputManager : MonoBehaviour
         }
     }
 
+    public void ClearTypingDisplay()
+    {
+        currentLetterSequence = string.Empty;
+        lastCompletedDisplay = string.Empty;
+        UpdateTypingDisplay();
+    }
+
     void OnDotDetected()
     {
+        BeginNextLetterIfNeeded();
         currentLetterSequence += ".";
+        UpdateTypingDisplay();
         Debug.Log("Current Sequence: " + currentLetterSequence + " (Dot)");
     }
 
     void OnDashDetected()
     {
+        BeginNextLetterIfNeeded();
         currentLetterSequence += "-";
+        UpdateTypingDisplay();
         Debug.Log("Current Sequence: " + currentLetterSequence + " (Dash)");
     }
 
     void ProcessCompletedSequence()
     {
-        if (string.IsNullOrEmpty(currentLetterSequence)) return;
+        if (string.IsNullOrEmpty(currentLetterSequence))
+            return;
 
-        // 1. Send the sequence to our new decoder dictionary
-        char translatedLetter = MorseDecoder.Translate(currentLetterSequence);
-        
-        // 2. Log out both the code and the real letter!
-        Debug.Log($"[Morse] {currentLetterSequence}  =>  [Decoded] {translatedLetter}");
-        
+        string finishedSequence = currentLetterSequence;
+        char translatedLetter = MorseDecoder.Translate(finishedSequence);
+        currentLetterSequence = string.Empty;
+        lastCompletedDisplay = MorseDecoder.FormatDecodedLetter(translatedLetter);
+        UpdateTypingDisplay();
+
+        Debug.Log($"[Morse] {finishedSequence}  =>  [Decoded] {translatedLetter}");
+
         if (typer != null)
-        {
             typer.ReceiveMorseLetter(translatedLetter);
-        }
         else
-        {
             Debug.LogWarning("Typer reference is missing on the MorseInputManager component!");
-        }
-        
-        // Reset for the next letter
-        currentLetterSequence = "";
+    }
+
+    private void BeginNextLetterIfNeeded()
+    {
+        if (currentLetterSequence.Length > 0 || string.IsNullOrEmpty(lastCompletedDisplay))
+            return;
+
+        lastCompletedDisplay = string.Empty;
+    }
+
+    private void UpdateTypingDisplay()
+    {
+        if (typingOutput == null)
+            return;
+
+        typingOutput.text = currentLetterSequence.Length > 0
+            ? currentLetterSequence
+            : lastCompletedDisplay;
     }
 }

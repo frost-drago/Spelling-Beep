@@ -7,6 +7,7 @@ public class Typer : MonoBehaviour
     public TextMeshProUGUI wordOutputBackground;
     public TextMeshProUGUI wordOutputForeground;
     public TextMeshProUGUI morseOutput;
+    public MorseInputManager morseInputManager;
 
     private string remainingWord = string.Empty;
     private string currentWord;
@@ -19,6 +20,7 @@ public class Typer : MonoBehaviour
     private void SetCurrentWord()
     {
         currentWord = wordBank.GetWord();
+        morseInputManager?.ClearTypingDisplay();
         SetRemainingWord(currentWord);
     }
 

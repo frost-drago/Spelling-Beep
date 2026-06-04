@@ -49,6 +49,17 @@ public static class MorseDecoder
     }
 
     /// <summary>
+    /// Returns the decoded letter in lowercase, or "???" when the sequence is not valid morse.
+    /// </summary>
+    public static string FormatDecodedLetter(char letter)
+    {
+        if (letter == InvalidLetter)
+            return "???";
+
+        return char.ToLowerInvariant(letter).ToString();
+    }
+
+    /// <summary>
     /// Returns the morse pattern for a single letter, or null if unknown.
     /// </summary>
     public static string EncodeLetter(char letter)
