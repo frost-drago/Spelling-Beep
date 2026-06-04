@@ -9,6 +9,7 @@ public class Typer : MonoBehaviour
     public TextMeshProUGUI morseOutput;
     public MorseInputManager morseInputManager;
     public CorrectLetterFx correctLetterFx;
+    public ScreenShake screenShake;
 
     private string remainingWord = string.Empty;
     private string currentWord;
@@ -80,7 +81,10 @@ public class Typer : MonoBehaviour
     public void ReceiveMorseLetter(char letter)
     {
         if (letter == MorseDecoder.InvalidLetter)
+        {
+            screenShake?.ShakeHorizontal();
             return;
+        }
 
         EnterLetter(char.ToLowerInvariant(letter).ToString());
     }
@@ -96,6 +100,10 @@ public class Typer : MonoBehaviour
             {
                 SetCurrentWord();
             }
+        }
+        else
+        {
+            screenShake?.ShakeHorizontal();
         }
     }
 
