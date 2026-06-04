@@ -106,3 +106,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Typer
   wordOutputBackground: {fileID: 0}
   wordOutputForeground: {fileID: 0}
+  morseOutput: {fileID: 0}

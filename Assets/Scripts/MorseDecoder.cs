@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public static class MorseDecoder
@@ -23,6 +24,17 @@ public static class MorseDecoder
         { ".-.-.-", '.' }, { "--..--", ',' }, { "..--..", '?' }
     };
 
+    private static readonly Dictionary<char, string> LetterToMorseDictionary = BuildLetterToMorseDictionary();
+
+    private static Dictionary<char, string> BuildLetterToMorseDictionary()
+    {
+        var letterToMorse = new Dictionary<char, string>();
+        foreach (KeyValuePair<string, char> entry in MorseDictionary)
+            letterToMorse[entry.Value] = entry.Key;
+
+        return letterToMorse;
+    }
+
     /// <summary>
     /// Translates a sequence of dots and dashes into a character.
     /// </summary>
@@ -34,5 +46,38 @@ public static class MorseDecoder
         }
         
         return InvalidLetter;
+    }
+
+    /// <summary>
+    /// Returns the morse pattern for a single letter, or null if unknown.
+    /// </summary>
+    public static string EncodeLetter(char letter)
+    {
+        char key = char.ToUpperInvariant(letter);
+        return LetterToMorseDictionary.TryGetValue(key, out string morse) ? morse : null;
+    }
+
+    /// <summary>
+    /// Formats a word as morse letter groups separated by " / ", e.g. ".- / .--. / .-.. / ." for "apl".
+    /// </summary>
+    public static string EncodeWord(string word)
+    {
+        if (string.IsNullOrEmpty(word))
+            return string.Empty;
+
+        var builder = new StringBuilder();
+        for (int i = 0; i < word.Length; i++)
+        {
+            string morse = EncodeLetter(word[i]);
+            if (morse == null)
+                continue;
+
+            if (builder.Length > 0)
+                builder.Append(" / ");
+
+            builder.Append(morse);
+        }
+
+        return builder.ToString();
     }
 }

@@ -1014,6 +1014,7 @@ MonoBehaviour:
   wordBank: {fileID: 2026555706}
   wordOutputBackground: {fileID: 231512314}
   wordOutputForeground: {fileID: 218512314}
+  morseOutput: {fileID: 821823874}
 --- !u!114 &2026555706 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1255313353036619697, guid: 51b507fa01838644984189d63467ae48, type: 3}

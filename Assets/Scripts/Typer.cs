@@ -6,6 +6,7 @@ public class Typer : MonoBehaviour
     public WordBank wordBank = null;
     public TextMeshProUGUI wordOutputBackground;
     public TextMeshProUGUI wordOutputForeground;
+    public TextMeshProUGUI morseOutput;
 
     private string remainingWord = string.Empty;
     private string currentWord;
@@ -31,6 +32,9 @@ public class Typer : MonoBehaviour
     {
         wordOutputBackground.text = currentWord;
         wordOutputForeground.text = currentWord;
+
+        if (morseOutput != null)
+            morseOutput.text = MorseDecoder.EncodeWord(currentWord);
 
         wordOutputForeground.ForceMeshUpdate();
         int revealedCount = currentWord.Length - remainingWord.Length;
