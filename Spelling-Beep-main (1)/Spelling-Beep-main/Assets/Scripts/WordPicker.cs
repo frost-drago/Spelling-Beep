@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using UnityEngine; // Added this because you use Application.dataPath below
 
 public static class WordPicker
 {
@@ -7,7 +8,7 @@ public static class WordPicker
         Path.Combine(Application.dataPath, "Word Dictionary", "output.txt")
     );
 
-    static Random rng = new Random();
+    static System.Random rng = new System.Random();
 
     static readonly (int start, int end)[] ranges =
     {
@@ -80,9 +81,7 @@ public static class WordPicker
         // Return the word at that index
         return words[randomIndex];
     }
-
-    using System;
-using System.IO;
+} // WordPicker ends here
 
 public static class LevelScaler
 {
@@ -101,7 +100,8 @@ public static class LevelScaler
 
         return (min, max);
     }
-// this method is the one getting exported, make sure to add level number
+
+    // this method is the one getting exported, make sure to add level number
     public static string GetWordForLevel(int level)
     {
         var (min, max) = GetWordLengthRange(level);
@@ -113,5 +113,4 @@ public static class LevelScaler
 
         return WordPicker.GetRandomWordRange(min, max);
     }
-}
-}
+} // LevelScaler ends here

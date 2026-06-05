@@ -7,7 +7,7 @@ public class StartMenu : MonoBehaviour
     public void PlayGame()
     {
         // Added the missing semicolon at the end
-        SceneManager.LoadSceneAsync("SampleScene"); 
+        SceneManager.LoadSceneAsync("DifficultyMenu"); 
     }
 
     public void QuitGame()
