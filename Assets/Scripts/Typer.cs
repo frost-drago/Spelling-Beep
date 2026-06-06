@@ -98,6 +98,7 @@ public class Typer : MonoBehaviour
 
             if (IsWordComplete())
             {
+                wordBank?.AdvanceLevel();
                 SetCurrentWord();
             }
         }
