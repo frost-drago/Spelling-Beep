@@ -53,6 +53,9 @@ public class Timer : MonoBehaviour
             isRunning = false;
             gameEnded = true;
             UpdateBar();
+            GameSettings.LastClearedLevel = wordBank != null
+                ? Mathf.Max(0, wordBank.Level - 1)
+                : 0;
             SceneManager.LoadScene(GameOverScene);
             return;
         }
