@@ -10,7 +10,10 @@ public class WordBank : MonoBehaviour
 
     private void Awake()
     {
-        level = 1;
+        level = Mathf.Max(1, GameSettings.PendingStartLevel);
+
+        if (!GameSettings.EndlessMode)
+            GameSettings.PendingStartLevel = 1;
     }
 
     public string GetWord()

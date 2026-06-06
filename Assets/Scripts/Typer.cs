@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Typer : MonoBehaviour
@@ -103,6 +104,15 @@ public class Typer : MonoBehaviour
 
             if (IsWordComplete())
             {
+                if (wordBank != null
+                    && !GameSettings.EndlessMode
+                    && wordBank.Level == GameSettings.WinStageLevel)
+                {
+                    GameSettings.LastClearedLevel = GameSettings.WinStageLevel;
+                    SceneManager.LoadScene("YouWin");
+                    return;
+                }
+
                 wordBank?.AdvanceLevel();
                 SetCurrentWord();
             }

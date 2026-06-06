@@ -6,23 +6,29 @@ public class DifficultyScript : MonoBehaviour
     public void EasyMode()
     {
         GameSettings.SelectedDifficulty = Difficulty.Easy;
-        SceneManager.LoadSceneAsync("SampleScene");
+        StartNewRun();
     }
 
     public void MediumMode()
     {
         GameSettings.SelectedDifficulty = Difficulty.Medium;
-        SceneManager.LoadSceneAsync("SampleScene");
+        StartNewRun();
     }
 
     public void HardMode()
     {
         GameSettings.SelectedDifficulty = Difficulty.Hard;
-        SceneManager.LoadSceneAsync("SampleScene");
+        StartNewRun();
     }
 
     public void BackToMenu()
     {
         SceneManager.LoadSceneAsync("StartMenu");
+    }
+
+    private static void StartNewRun()
+    {
+        GameSettings.PrepareNewRun();
+        SceneManager.LoadSceneAsync("SampleScene");
     }
 }

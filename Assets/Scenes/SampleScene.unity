@@ -776,7 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MorseInputManager
   dotThreshold: 0.14
-  letterGapThreshold: 0.8
+  letterGapThreshold: 0.6
   typer: {fileID: 1225693453}
   typingOutput: {fileID: 1345066706}
 --- !u!4 &659378999
