@@ -1,44 +1,77 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private float timeLimit = 60f;
+    private const float MaxTime = 30f;
+    private const float LevelBonus = 10f;
+    private const string GameOverScene = "GameOver";
+
+    [SerializeField] private Image fillImage;
+    [SerializeField] private WordBank wordBank;
+
     private float timeRemaining;
-    private bool timerRunning = false;
+    private bool isRunning;
+    private bool gameEnded;
 
-    public void StartTimer()
+    private void Awake()
     {
-        timeRemaining = timeLimit;
-        timerRunning = true;
-        StartCoroutine(TimerCoroutine());
+        if (wordBank == null)
+            wordBank = FindFirstObjectByType<WordBank>();
     }
 
-    public void StopTimer()
+    private void OnEnable()
     {
-        timerRunning = false;
-        StopAllCoroutines();
+        if (wordBank != null)
+            wordBank.OnLevelChanged += HandleLevelChanged;
     }
 
-    private IEnumerator TimerCoroutine()
+    private void OnDisable()
     {
-        while (timerRunning && timeRemaining > 0)
+        if (wordBank != null)
+            wordBank.OnLevelChanged -= HandleLevelChanged;
+    }
+
+    private void Start()
+    {
+        timeRemaining = MaxTime;
+        isRunning = true;
+        UpdateBar();
+    }
+
+    private void Update()
+    {
+        if (!isRunning || gameEnded)
+            return;
+
+        timeRemaining -= Time.deltaTime;
+
+        if (timeRemaining <= 0f)
         {
-            yield return new WaitForSeconds(1f);
-            timeRemaining -= 1f;
+            timeRemaining = 0f;
+            isRunning = false;
+            gameEnded = true;
+            UpdateBar();
+            SceneManager.LoadScene(GameOverScene);
+            return;
         }
 
-        if (timeRemaining <= 0)
-        {
-            timerRunning = false;
-            // Handle timer end logic here (e.g., notify other scripts, trigger events, etc.)
-            Debug.Log("Timer has ended!");
-        }
+        UpdateBar();
     }
 
-    public float GetTimeRemaining()
+    private void HandleLevelChanged(int level)
     {
-        return timeRemaining;
+        if (level <= 1)
+            return;
+
+        timeRemaining = Mathf.Min(MaxTime, timeRemaining + LevelBonus);
+        UpdateBar();
+    }
+
+    private void UpdateBar()
+    {
+        if (fillImage != null)
+            fillImage.fillAmount = timeRemaining / MaxTime;
     }
 }
