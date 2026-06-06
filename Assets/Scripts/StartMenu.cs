@@ -3,27 +3,22 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
-    // "public" must be lowercase!
     public void PlayGame()
     {
-        // Added the missing semicolon at the end
-        SceneManager.LoadSceneAsync("DifficultyMenu"); 
+        SceneManager.LoadScene("DifficultyMenu");
     }
 
     public void QuitGame()
     {
-        // If playing in the Unity Editor, stop playing
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #else
-        // If running the actual built game application, close it
+#else
         Application.Quit();
-        #endif
+#endif
     }
 
     public void QuitGameSession()
     {
-        // Added the missing semicolon at the end
-        SceneManager.LoadSceneAsync("StartMenu"); 
+        SceneManager.LoadScene("StartMenu");
     }
 }

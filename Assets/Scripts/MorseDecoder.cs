@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class MorseDecoder
 {
@@ -87,6 +88,54 @@ public static class MorseDecoder
                 builder.Append(" / ");
 
             builder.Append(morse);
+        }
+
+        return builder.ToString();
+    }
+
+    public static HashSet<int> PickRandomObfuscatedIndices(int wordLength)
+    {
+        var obfuscated = new HashSet<int>();
+        int count = wordLength / 2;
+
+        if (count <= 0)
+            return obfuscated;
+
+        var available = new List<int>(wordLength);
+        for (int i = 0; i < wordLength; i++)
+            available.Add(i);
+
+        for (int i = 0; i < count; i++)
+        {
+            int pick = Random.Range(0, available.Count);
+            obfuscated.Add(available[pick]);
+            available.RemoveAt(pick);
+        }
+
+        return obfuscated;
+    }
+
+    public static string EncodeWordWithObfuscation(string word, int startIndex, HashSet<int> obfuscatedIndices)
+    {
+        if (string.IsNullOrEmpty(word))
+            return string.Empty;
+
+        var builder = new StringBuilder();
+        for (int i = 0; i < word.Length; i++)
+        {
+            if (builder.Length > 0)
+                builder.Append(" / ");
+
+            int fullIndex = startIndex + i;
+            if (obfuscatedIndices != null && obfuscatedIndices.Contains(fullIndex))
+            {
+                builder.Append("?");
+                continue;
+            }
+
+            string morse = EncodeLetter(word[i]);
+            if (morse != null)
+                builder.Append(morse);
         }
 
         return builder.ToString();

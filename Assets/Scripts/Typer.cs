@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -13,6 +14,7 @@ public class Typer : MonoBehaviour
 
     private string remainingWord = string.Empty;
     private string currentWord;
+    private HashSet<int> obfuscatedIndices;
 
     private void Start()
     {
@@ -22,6 +24,9 @@ public class Typer : MonoBehaviour
     private void SetCurrentWord()
     {
         currentWord = wordBank.GetWord();
+        obfuscatedIndices = GameSettings.SelectedDifficulty == Difficulty.Medium
+            ? MorseDecoder.PickRandomObfuscatedIndices(currentWord.Length)
+            : null;
         morseInputManager?.ClearTypingDisplay();
         SetRemainingWord(currentWord);
     }
@@ -38,7 +43,7 @@ public class Typer : MonoBehaviour
         wordOutputForeground.text = currentWord;
 
         if (morseOutput != null)
-            morseOutput.text = MorseDecoder.EncodeWord(remainingWord);
+            morseOutput.text = GetMorseDisplayText();
 
         wordOutputForeground.ForceMeshUpdate();
         int revealedCount = currentWord.Length - remainingWord.Length;
@@ -122,5 +127,19 @@ public class Typer : MonoBehaviour
     private bool IsWordComplete()
     {
         return remainingWord.Length == 0;
+    }
+
+    private string GetMorseDisplayText()
+    {
+        switch (GameSettings.SelectedDifficulty)
+        {
+            case Difficulty.Hard:
+                return string.Empty;
+            case Difficulty.Medium:
+                int revealedCount = currentWord.Length - remainingWord.Length;
+                return MorseDecoder.EncodeWordWithObfuscation(remainingWord, revealedCount, obfuscatedIndices);
+            default:
+                return MorseDecoder.EncodeWord(remainingWord);
+        }
     }
 }

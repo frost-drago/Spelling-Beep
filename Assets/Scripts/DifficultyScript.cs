@@ -3,20 +3,26 @@ using UnityEngine.SceneManagement;
 
 public class DifficultyScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void EasyMode(){
-        SceneManager.LoadSceneAsync("SampleScene"); 
+    public void EasyMode()
+    {
+        GameSettings.SelectedDifficulty = Difficulty.Easy;
+        SceneManager.LoadSceneAsync("SampleScene");
     }
 
-    public void MediumMode(){
-        //add something
+    public void MediumMode()
+    {
+        GameSettings.SelectedDifficulty = Difficulty.Medium;
+        SceneManager.LoadSceneAsync("SampleScene");
     }
 
-    public void HardMode(){
-        //add something
+    public void HardMode()
+    {
+        GameSettings.SelectedDifficulty = Difficulty.Hard;
+        SceneManager.LoadSceneAsync("SampleScene");
     }
 
-    public void BackToMenu(){
+    public void BackToMenu()
+    {
         SceneManager.LoadSceneAsync("StartMenu");
     }
 }
