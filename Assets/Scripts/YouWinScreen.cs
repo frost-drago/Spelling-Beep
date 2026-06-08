@@ -18,6 +18,10 @@ public class YouWinScreen : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
+    public void BackToMainMenu(){
+        SceneManager.LoadScene("StartMenu");
+    }
+
     public void QuitGame()
     {
 #if UNITY_EDITOR
