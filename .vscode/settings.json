@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Spelling-Beep.slnx"
+    "dotnet.defaultSolution": "Morse Alpha.slnx"
 }
