@@ -1,14 +1,20 @@
 using System;
 using System.IO;
-using UnityEngine; // Added this because you use Application.dataPath below
+using UnityEngine;
 
 public static class WordPicker
 {
-    static string[] words = File.ReadAllLines(
-        Path.Combine(Application.dataPath, "Word Dictionary", "output.txt")
-    );
-
+    static string[] words;
     static System.Random rng = new System.Random();
+
+    static void EnsureWordsLoaded()
+    {
+        if (words != null)
+            return;
+
+        string path = Path.Combine(Application.streamingAssetsPath, "Word Dictionary", "output.txt");
+        words = File.ReadAllLines(path);
+    }
 
     static readonly (int start, int end)[] ranges =
     {
@@ -33,6 +39,8 @@ public static class WordPicker
 
     public static string GetRandomWord(int length)
     {
+        EnsureWordsLoaded();
+
         // Check if the requested length is valid
         if (length < 2 || length >= ranges.Length)
         {
@@ -53,6 +61,8 @@ public static class WordPicker
 
     public static string GetRandomWordRange(int minLength, int maxLength)
     {
+        EnsureWordsLoaded();
+
         // Check if lengths are valid
         if (minLength < 2 || maxLength >= ranges.Length)
         {
